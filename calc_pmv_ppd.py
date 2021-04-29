@@ -158,3 +158,27 @@ end = time.time()
 
 print(end - start)
 import pandas as pd
+
+## Extra Feature section
+import time
+
+start = time.time()
+
+ta = df["tdb"].values
+tr = df["tr"].values
+vel = df["v"].values
+rh = df["rh"].values
+met = df["met"].values
+clo = df["clo"].values
+
+v_rel = np.vectorize(v_relative)(vel, met)
+results = np.vectorize(pmv_ppd)(ta, tr, v_rel, rh, met, clo, 0, "ashrae", "SI")
+
+# split the pmv column in two since currently contains both pmv and ppd values
+df_ = pd.DataFrame(results)
+df = pd.concat([df, df_], axis=1, sort=False)
+
+end = time.time()
+
+print(end - start)
+import pandas as pd
